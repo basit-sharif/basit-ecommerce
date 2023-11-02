@@ -17,8 +17,10 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@sanity/image-url": "^1.0.2",
     "@sanity/vision": "^3.18.0",
+    "@vercel/postgres": "^0.5.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
+    "drizzle-orm": "^0.28.6",
     "lucide-react": "^0.287.0",
     "next": "13.5.4",
     "next-sanity": "^5.5.8",
@@ -29,7 +31,8 @@
     "sanity": "^3.18.0",
     "styled-components": "5.2",
     "tailwind-merge": "^1.14.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/node": "^20",
