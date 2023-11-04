@@ -15,10 +15,10 @@ export async function GET(req: NextRequest) {
         .select()
         .from(cartTable)
         .where(eq(cartTable.userid, userid));
-      return NextResponse.json("OK");
+      return NextResponse.json(cartData);
     } else {
       throw new Error("User id not found");
-    }
+    };
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
@@ -82,7 +82,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function PUT(req: NextResponse) {
+export async function PUT(req: NextRequest) {
   const body = await req.json();
   const validatedBody = validatePOST.parse(body);
 
