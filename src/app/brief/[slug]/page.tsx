@@ -4,6 +4,7 @@ import BriefLoadingSkeleton from "@/components/ui/BriefLoadingSkeleton";
 import LoadingComponent from "@/components/ui/LoadingComponent";
 import { allProductFetherFromSanity, detailOfSingleProductFromSanity } from "@/components/utils/apicalling"
 import { allProductFetherFromSanityType, singleProductType } from "@/components/utils/types";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { Suspense } from "react";
 
 export async function generateStaticParams() {
@@ -44,10 +45,11 @@ const Brief = async ({ params }: { params: { slug: string } }) => {
 async function Detail({ slug }: { slug: string }) {
     const data = await Promise.all([detailOfSingleProductFromSanity(slug), allProductFetherFromSanity()]) as allProductFetherFromSanityType[];
 
-    await new Promise((res) => setTimeout(res, 5000));
+    const { getUser } = getKindeServerSession();
+    const user = getUser();
 
     return <>
-        <BriefProduct product={data[0].result[0]} />
+        <BriefProduct product={data[0].result[0]} user={user} />
         <ProductGridViewer ProducData={data[1].result.slice(0, 3)} />
     </>
 }
