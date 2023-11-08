@@ -4,8 +4,12 @@ import { singleProductType } from "../utils/types"
 import { urlForImage } from "../../../sanity/lib/image";
 import PortableText from "react-portable-text"
 import Image from "next/image";
+import { KindeUser } from "@kinde-oss/kinde-auth-nextjs/server";
+import { addToCartApiCall } from "../utils/apicalling";
+import { useToast } from "../ui/use-toast";
+import { Toaster } from "../ui/toaster";
 
-const BriefProduct = ({ product }: { product: singleProductType }) => {
+const BriefProduct = ({ product, user }: { product: singleProductType, user: KindeUser }) => {
     const [size, setsize] = useState<string>(product.size[0]);
     const [activeImageUrl, setActiveImageUrl] = useState<string>(urlForImage(product.image[0]).url() as string)
     const [imagesArray, setImagesArray] = useState<string[]>(() => {
@@ -13,9 +17,28 @@ const BriefProduct = ({ product }: { product: singleProductType }) => {
             return urlForImage(element).url() as string
         })
     });
+    const { toast } = useToast();
+
+    async function hadleAddToCart() {
+        if (user) {
+            await addToCartApiCall(user.id as string, product._id);
+            toast({
+                title: "Sucessfull",
+                description: "Added to Cart Sucessfully",
+            })
+            console.log("hoh")
+        } else {
+            toast({
+                title: "Unucessfull",
+                description: "Can not add to Cart Sucessfully",
+                variant: "destructive"
+            })
+        }
+    }
 
     return (
         <section className="text-gray-600 body-font overflow-hidden">
+            <Toaster />
             <div className="container px-5 py-24 mx-auto">
                 <div className="lg:w-4/5 mx-auto flex flex-wrap">
                     <div className="lg:w-1/2 w-full space-y-5">
@@ -23,7 +46,7 @@ const BriefProduct = ({ product }: { product: singleProductType }) => {
                         <div className="flex max-w-1/2 gap-7 mx-auto w-full overflow-hidden">
                             {
                                 imagesArray.map((item, index) => (
-                                    <Image key={index} onClick={()=>setActiveImageUrl(item)} width={500} height={500} className={`${item === activeImageUrl && "ring-4 ring-indigo-500 opacity-75"} cursor-pointer w-28 h-36 `} alt={item + index} src={item} />
+                                    <Image key={index} onClick={() => setActiveImageUrl(item)} width={500} height={500} className={`${item === activeImageUrl && "ring-4 ring-indigo-500 opacity-75"} cursor-pointer w-28 h-36 `} alt={item + index} src={item} />
                                 ))
                             }
                         </div>
@@ -87,7 +110,7 @@ const BriefProduct = ({ product }: { product: singleProductType }) => {
                         </div>
                         <div className="flex">
                             <span className="title-font font-medium text-2xl text-gray-900">{"$"}{product.price}{".00"}</span>
-                            <button className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">Add to Cart</button>
+                            <button aria-label="This will add product to cart" onClick={hadleAddToCart} className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">Add to Cart</button>
                         </div>
                     </div>
                 </div>

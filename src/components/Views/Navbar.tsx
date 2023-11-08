@@ -47,7 +47,7 @@ const Navbar = () => {
                 </nav>
                 <div className="space-x-4 flex items-center">
                     <SearchFeature />
-                    <ShoppingCart size={18} />
+                    <Link href={"/cart"}><ShoppingCart size={18} /></Link>
                     {!user ? (<div className="space-x-3">
                         <LoginLink className={buttonVariants({
                             variant: "outline",

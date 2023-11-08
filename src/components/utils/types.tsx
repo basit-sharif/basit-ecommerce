@@ -32,7 +32,8 @@ export interface singleProductType {
     productname: string,
     quantity: number,
     price: number,
-    slug: singleProductTypeSlug
+    slug: singleProductTypeSlug,
+    _id:string,
 }
 export interface allProductFetherFromSanityType {
     query: string,
