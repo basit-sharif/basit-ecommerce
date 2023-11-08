@@ -2,5 +2,5 @@
 import { revalidatePath } from "next/cache"
 
 export default async function refreshData() {
-    revalidatePath('/')
+    revalidatePath('/cart')
 }
